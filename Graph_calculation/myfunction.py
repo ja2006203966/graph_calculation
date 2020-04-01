@@ -92,8 +92,14 @@ def get_coornum(x,axis = [0,1], bins = (28,28), dtype = tf.float32):
     ind = map_index(a, dtype = tf.int32, coor0 = coor0 )
     a = map_matrix_2d(a, ind, bins = bins)
     a =tf.math.logical_not(tf.math.equal(a,0))
-    a = tf.cast(a, dtype = tf.int8)
-    a = tf.transpose(a, axis )
+    a = tf.cast(a, dtype = tf.int32)
+    a = tf.transpose(a, axis)
     a = tf.reduce_sum(a, axis = -1)
     return a
-    
+
+def supp(axis = 0, bins = (28,28), base = 2, dtype = tf.int32):
+    supp = tf.range(0,bins[axis])
+    supp = tf.reverse(supp, [0])
+    supp = base**(supp +1)
+    supp = tf.cast(supp, dtype = dtype)
+    return supp
